@@ -5,8 +5,9 @@ import Editor from "../components/Editor";
 import { initSocket } from "../socket";
 import ACTIONS from "../Actions";
 import { Navigate, useLocation  , useNavigate, useParams} from "react-router-dom";
-const EditorPage = () => {
+ const EditorPage = () => {
   const socketRef = useRef(null);
+  const codeRef = useRef(null);
   const location =useLocation();
   const {roomId} = useParams();
   
@@ -40,7 +41,11 @@ const EditorPage = () => {
           }
          
           setClient(clients);
-
+          socketRef.current.emit(ACTIONS.SYNC_CODE, {
+            code: codeRef.current,
+            socketId,
+        });
+          
         }
         );
 
@@ -105,9 +110,12 @@ if (!location.state){
         <button className="btn leaveBtn" onClick = {leaveRoom} >Leave</button>
       </div>
       <div className="editorWrap">
-        <Editor socketRef={socketRef} roomId={roomId} />
+        <Editor socketRef={socketRef} roomId={roomId} 
+        onCodeChange = {(code) => {
+        codeRef.current = code;
+        }} />
       </div>
-    </div>
+      </div>
   );
 };
 
