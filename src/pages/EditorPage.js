@@ -39,7 +39,7 @@ import { Navigate, useLocation  , useNavigate, useParams} from "react-router-dom
             toast.success(`${username} joined the room`)
             console.log(`${username} joined`)
           }
-         
+        
           setClient(clients);
           socketRef.current.emit(ACTIONS.SYNC_CODE, {
             code: codeRef.current,
